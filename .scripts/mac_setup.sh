@@ -357,6 +357,30 @@ defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -int 1
 # Prevent Photos from opening automatically when devices are plugged in
 defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
+###############################################################################
+# Dotfiles                                                                    #
+###############################################################################
+# More stealing from https://www.atlassian.com/git/tutorials/dotfiles
+
+alias dot='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+echo ".dotfiles" >> .gitignore
+
+git clone --bare git@github.com:leegenes/dot.git $HOME/.dotfiles
+function dot {
+   /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
+}
+dot checkout
+if [ $? = 0 ]; then
+  echo "Checked out config.";
+  else
+    mkdir -p .dot-backup
+    echo "Backing up pre-existing dot files.";
+    dot checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .dot-backup/{}
+fi;
+dot checkout
+dot config status.showUntrackedFiles no
+
+
 echo ""
 cecho "Done!" $cyan
 echo ""
