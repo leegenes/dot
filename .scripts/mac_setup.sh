@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # From here on, mostly stolen from https://github.com/nnja/new-computer/
 
 # Some configs reused from:
@@ -38,22 +40,24 @@ cecho "#         AND EDIT TO SUIT YOUR NEEDS         #" $red
 cecho "###############################################" $red
 echo ""
 
-# Set continue to false by default.
-CONTINUE=false
+# # Set continue to false by default.
+# CONTINUE=false
 
-echo ""
-cecho "Have you read through the script you're about to run and " $red
-cecho "understood that it will make changes to your computer? (y/n)" $red
-read -r response
-if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
-  CONTINUE=true
-fi
+# echo ""
+# cecho "Have you read through the script you're about to run and " $red
+# cecho "understood that it will make changes to your computer? (y/n)" $red
+# read -r response
+# if [ $response =~ ^([yY][eE][sS]|[yY])$ ]
+# then
+#   CONTINUE=true
+# fi
 
-if ! $CONTINUE; then
-  # Check if we're continuing and output a message if not
-  cecho "Please go read the script, it only takes a few minutes" $red
-  exit
-fi
+# if ! $CONTINUE
+# then
+#   # Check if we're continuing and output a message if not
+#   cecho "Please go read the script, it only takes a few minutes" $red
+#   exit
+# fi
 
 # Here we go.. ask for the administrator password upfront and run a
 # keep-alive to update existing `sudo` time stamp until script has finished
@@ -370,7 +374,8 @@ function dot {
    /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
 }
 dot checkout
-if [ $? = 0 ]; then
+if [ $? = 0 ]
+then
   echo "Checked out config.";
   else
     mkdir -p .dot-backup
@@ -393,6 +398,7 @@ echo ""
 echo ""
 echo -n "Check for and install available OSX updates, install, and automatically restart? (y/n)? "
 read response
-if [ "$response" != "${response#[Yy]}" ] ;then
-    softwareupdate -i -a --restart
+if [ "$response" != "${response#[Yy]}" ]
+then
+  softwareupdate -i -a --restart
 fi
