@@ -68,6 +68,9 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # Prerequisite: Install Brew #
 ##############################
 
+export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
+export HOMEBREW_NO_ENV_HINTS=TRUE
+
 echo "Installing brew..."
 
 if test ! $(which brew)
@@ -76,43 +79,47 @@ then
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null
 fi
 
+# echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/lee/.zprofile
+# eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # Latest brew, install brew cask
 brew upgrade
 brew update
-brew tap caskroom/cask
+# brew install cask
 
 #############################################
 ### Generate ssh keys & add to ssh-agent
 ### See: https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/
 #############################################
+# if [ -e ~/.ssh/id_rsa ]
+# then
+#   echo "ssh key already exists."
+# else 
+#   echo "Generating ssh keys, adding to ssh-agent..."
+#   read -p 'Input email for ssh key: ' useremail
 
-echo "Generating ssh keys, adding to ssh-agent..."
-read -p 'Input email for ssh key: ' useremail
+#   echo "Use default ssh file location, enter a passphrase: "
+#   ssh-keygen -t rsa -b 4096 -C "$useremail"  # will prompt for password
+#   eval "$(ssh-agent -s)"
 
-echo "Use default ssh file location, enter a passphrase: "
-ssh-keygen -t rsa -b 4096 -C "$useremail"  # will prompt for password
-eval "$(ssh-agent -s)"
+#   # Now that sshconfig is synced add key to ssh-agent and
+#   # store passphrase in keychain
+#   ssh-add -K ~/.ssh/id_rsa
+# fi
 
-# Now that sshconfig is synced add key to ssh-agent and
-# store passphrase in keychain
-ssh-add -K ~/.ssh/id_rsa
-
-# If you're using macOS Sierra 10.12.2 or later, you will need to modify your ~/.ssh/config file to automatically load keys into the ssh-agent and store passphrases in your keychain.
-
-if [ -e ~/.ssh/config ]
-then
-    echo "ssh config already exists. Skipping adding osx specific settings... "
-else
-	echo "Writing osx specific settings to ssh config... "
-   cat <<EOT >> ~/.ssh/config
-	Host *
-		AddKeysToAgent yes
-		UseKeychain yes
-		IdentityFile ~/.ssh/id_rsa
-EOT
-fi
-
-SSH_KEY=`cat ~/.ssh/id_rsa.pub`
+# # If you're using macOS Sierra 10.12.2 or later, you will need to modify your ~/.ssh/config file to automatically load keys into the ssh-agent and store passphrases in your keychain.
+# if [ -e ~/.ssh/config ]
+# then
+#     echo "ssh config already exists. Skipping adding osx specific settings... "
+# else
+#   echo "Writing osx specific settings to ssh config... "
+#   cat <<EOT >> ~/.ssh/config
+# 	Host *
+# 		AddKeysToAgent yes
+# 		UseKeychain yes
+# 		IdentityFile ~/.ssh/id_rsa
+# EOT
+# SSH_KEY=`cat ~/.ssh/id_rsa.pub`
 
 #############################################
 ### Add ssh-key to GitHub via api
@@ -179,9 +186,9 @@ done
 echo "Starting brew app install..."
 
 # Development
-brew cask install iterm2
+brew install --cask iterm2
 
-brew cask install docker
+brew install --cask docker
 brew install postgresql
 brew install redis
 
@@ -191,38 +198,38 @@ brew install zsh
 brew install tmux
 brew install less
 
-brew cask install postman
+brew install --cask postman
 
 # Python
 brew install python
 brew install pyenv
 
 # Editors
-brew cask install visual-studio-code
-brew cask install pycharm
+brew install --cask visual-studio-code
+brew install --cask pycharm
 
-brew cask install amethyst
-brew cask install flameshot
-brew cask install alfred
-brew cask install vivaldi
+brew install --cask amethyst
+brew install --cask flameshot
+brew install --cask alfred
+brew install --cask vivaldi
 
-brew cask install 1password
+brew install --cask 1password
 
 # Personal
-brew cask install obsidian
-brew cask install spotify
-brew cask install karabiner-elements
-brew cask install istat-menus
+brew install --cask obsidian
+brew install --cask spotify
+brew install --cask karabiner-elements
+brew install --cask istat-menus
 
 
 # Work
 
 # Check
-brew cask install slack
-brew cask install loom
-brew cask install perimeter81
-brew cask install tuple
-brew cask install zoomus
+brew install --cask slack
+brew install --cask loom
+brew install --cask perimeter81
+brew install --cask tuple
+brew install --cask zoomus
 
 ## Clean
 brew cleanup
@@ -236,8 +243,8 @@ echo "Installing fonts..."
 brew tap caskroom/fonts
 
 ### programming fonts
-brew cask install font-fira-mono-for-powerline
-brew cask install font-fira-code
+brew install --cask font-fira-mono-for-powerline
+brew install --cask font-fira-code
 
 ### SourceCodePro + Powerline + Awesome Regular (for powerlevel 9k terminal icons)
 cd ~/Library/Fonts && { curl -O 'https://github.com/Falkor/dotfiles/blob/master/fonts/SourceCodePro+Powerline+Awesome+Regular.ttf?raw=true' ; cd -; }
