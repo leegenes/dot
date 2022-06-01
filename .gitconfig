@@ -1,0 +1,10 @@
+# This is Git's per-user configuration file.
+[user]
+	email = lee@checkhq.com
+# Please adapt and uncomment the following lines:
+#	name = Lee Haugen
+#	email = lee@checkhq.com
+[init]
+	defaultBranch = main
+[pull]
+	rebase = false
