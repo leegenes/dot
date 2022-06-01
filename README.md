@@ -1,2 +1,2 @@
 # dot
-My dotfiles, created in a fury setting up a new work machine
+In theory `curl -s https://raw.githubusercontent.com/leegenes/dot/main/.scripts/mac_setup.sh | bash` should do the thing.
